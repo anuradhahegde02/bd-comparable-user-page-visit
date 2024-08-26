@@ -13,8 +13,9 @@ public class UserPageVisit implements Comparable<UserPageVisit> {
 
     /**
      * Constructs a UserPageVisit object.
-     * @param userId unique userId
-     * @param page page that the user has visited
+     *
+     * @param userId              unique userId
+     * @param page                page that the user has visited
      * @param timeOnPageInSeconds time (in seconds) that user spent on the page
      */
     public UserPageVisit(long userId, String page, int timeOnPageInSeconds) {
@@ -38,13 +39,15 @@ public class UserPageVisit implements Comparable<UserPageVisit> {
     /**
      * The method that checks if this object is equal to another object. If the object is of same type,
      * the fields that are compared for equality are userId and page. Field timeOnPageInSeconds is ignored.
+     *
      * @param o - object to compare this object against.
      * @return true if objects are equal, false otherwise.
      */
     @Override
     public boolean equals(Object o) {
-        // PARTICIPANTS: implement equals method here (hint: you can use intellij's auto-generate).
-        return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserPageVisit that = (UserPageVisit) o;
+        return userId == that.userId && Objects.equals(page, that.page);
     }
 
     @Override
@@ -54,27 +57,45 @@ public class UserPageVisit implements Comparable<UserPageVisit> {
 
     /**
      * Compares with another UserPageVisit.
-     *
+     * <p>
      * Ordering logic:
      * 1 Sort by userId, ascending
      * 2 if userId is equal, sort by page, ascending
+     *
      * @param other user page visit which is being compared to this one
      * @return < 0 if this UserPageVisit orders before other
-     *         0 if this UserPageVisit is equal to other
-     *         > 0 if this UserPageVisit orders after other
+     * 0 if this UserPageVisit is equal to other
+     * > 0 if this UserPageVisit orders after other
      */
     @Override
     public int compareTo(UserPageVisit other) {
         // PARTICIPANTS: implement compareTo method here
+
+        if (this.userId == other.userId) {
+            if (this.page == other.page) {
+                return 0;
+            } else if (this.hashCode() > other.hashCode()) {
+                return -1;
+            } else {
+                return 1;
+            }
+
+        } else if (this.userId != other.userId) {
+            if (this.userId > other.userId || this.page != other.page) {
+                return 1;
+            }
+            return -1;
+        }
+
         return 0;
     }
 
     @Override
     public String toString() {
         return "UserPageVisit{" +
-               "userId=" + userId +
-               ", page='" + page + '\'' +
-               ", timeOnPageInSeconds=" + timeOnPageInSeconds +
-               '}';
+                "userId=" + userId +
+                ", page='" + page + '\'' +
+                ", timeOnPageInSeconds=" + timeOnPageInSeconds +
+                '}';
     }
 }
